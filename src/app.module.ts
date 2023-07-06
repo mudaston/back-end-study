@@ -7,6 +7,10 @@ import { RedisClientOptions } from 'redis';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { PrismaModule } from './database/prisma.module';
+import { TweetsModule } from './modules/tweets/tweets.module';
+import { ApiController } from './api/api.controller';
+import { UsersModule } from './modules/users/users.module';
 
 @Module({
   imports: [
@@ -22,8 +26,14 @@ import { AppService } from './app.service';
       isGlobal: true,
       inject: [ConfigService],
     }),
+    PrismaModule,
+    TweetsModule,
+    UsersModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, ApiController],
+  providers: [
+    AppService,
+    { provide: APP_INTERCEPTOR, useClass: CacheInterceptor },
+  ],
 })
 export class AppModule {}

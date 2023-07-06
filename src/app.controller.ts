@@ -8,6 +8,7 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
+  @CacheTTL(5000)
   getName(): Promise<string> {
     return this.appService.getName();
   }
